@@ -24,7 +24,7 @@ General C remarks:
 
 */
 struct node {
-  char* str; // str :: char* 
+  int num; // str :: char* 
   struct node* next; // next :: node* 
                      // recursive, ie next is pointer to new struct node
                      // struct node has struct node* means 
@@ -37,7 +37,8 @@ struct node {
 //                  but instead, we say that lst just is :: struct node*
 // we don't pass in the something of lst because it's bigger than just the pointer
 // and it takes time to make a copy of lst to put in as an arg here
-int printLinkedList(struct node* lstPointer) { // ideally, node would be blue and italicized too
+int sumLinkedList(struct node* lstPointer) { // ideally, node would be blue and italicized too
+  int sum;
   /*for 
     (anything (executed once); 
     conditional (bool expr); -- tested each iter before exec for loop; breaks if false
@@ -61,8 +62,15 @@ int printLinkedList(struct node* lstPointer) { // ideally, node would be blue an
 
   // != 0 is already false, so can just write without the != 0 
   for (struct node* pointerToSNode = lstPointer; pointerToSNode != 0; pointerToSNode = pointerToSNode -> next){
-    printf("%s\n", pointerToSNode -> str);
+    // can say type of nextNum in same var assignment line
+    // could also be num because num is a field so no conflict, 
+    // but is nextNum for human clarity 
+    int nextNum = pointerToSNode -> num;
+    printf("%d\n", nextNum);
+    sum += nextNum;
   }
+
+  printf("%d\n", sum);
 
   return 0;
 }
@@ -120,7 +128,7 @@ int main(int argc, char **argv) { /* argc is length of list because
     newLst -> next = lst; // var "next" in newLst is now equal to lst
                           // (newLst -> next) is set to lst, which is set to the previous 
                           // iter's newLst each time
-    newLst -> str  = argv[i];
+    newLst -> num  = atoi(argv[i]); // atoi is like python int(); if float, int(floor()); else 0; 
     // changes value of lst to point to the same place as where newLst points
     // ie it changes pointer which is value of lst but not the value at the poiner lst holds 
     // ie doesnt have the node that is pointed to by newLst, just the pointer to it
@@ -130,7 +138,7 @@ int main(int argc, char **argv) { /* argc is length of list because
     lst = newLst; // save this iter's newLst (ie pointer to struct node) as lst for next iter
   }
 
-  printLinkedList(lst);
+  sumLinkedList(lst);
 
   // TODO: Using the list (ie walk the pointer)
 
