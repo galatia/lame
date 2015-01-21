@@ -1,0 +1,73 @@
+ex15
+----
+* Why are these not the same?
+
+  int newsize = sizeof(&cur_age); // / sizeof(int);
+  printf("newsize: %d, old size: %d\n", newsize, count);
+
+  // safely get the size of ages
+  int count = sizeof(ages) / sizeof(int);
+
+
+ex16:
+----
+* How does malloc know where the mem should be assigned? 
+---> complicated, many algorithms for this; 
+     bump allocator
+
+* What makes it occasionally be NULL? (st you need to check assert mem != NULL)
+---> if it's literally out of RAM+swap space
+
+* Why do you need to strdup the *char for the struct?
+
+* Why do you assert(who != NULL) for free?
+"""
+The free() function deallocates the memory alloca-
+     tion pointed to by ptr. If ptr is a NULL pointer,
+          no operation is performed.
+"""
+->
+void Person_destroy(struct Person *who) 
+{
+  // make sure the input is good
+  assert(who != NULL);
+
+  // need to free (who -> name) "individually" because of strdup; it's not just the pointer to the args
+  free(who -> name);
+  free(who);
+}
+
+If I have that line:
+Assertion failed: (who != NULL), function Person_destroy, file ex16b.c, line 41.
+Abort trap: 6
+
+Without, it's a seg fault
+
+* Can you talk about this? :)
+If you didn't have struct you'd need to figure out the size, packing, and location of pieces of memory with contents like this. In fact, in most early assembler code (and even some now) this is what you do. With C you can let C handle the memory structuring of these compound data types and then focus on what you do with them.
+
+* Can you help with EC for ex16?
+Convert this program to not use pointers and malloc.
+- How to create a struct on the stack, which means just like you've been making any other variable.
+- How to initialize it using the x.y (period) character instead of the x->y syntax.
+- How to pass a structure to other functions without using a pointer.
+
+* i don't understand fflush
+  // fflush forces a write to the file
+  rc = fflush(conn -> file);
+  if(rc == -1) die ("Cannot flush database");
+
+* what is this dot thing?
+void Database_create(struct Connection *conn)
+{
+  int i;
+  for(i = 0; i < MAX_ROWS; i++)  {
+    // make a prototype to initialize it
+    struct Address addr = {.id = i, .set = 0};
+    // then just assign it
+    // get the i element of rows, which is in db, which is in conn, then get
+    // the address of (&) it
+    conn -> db -> rows[i] = addr;
+  }
+}
+
