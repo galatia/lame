@@ -1,0 +1,9 @@
+ex 1-9
+* what is input?
+* how do you tell it that if (c == '\n'), it shouldn't do anything? Break?
+
+1.7/1.8
+"call by value"
+* when parameters are passed into a function, if it's not a ptr to a function,
+are the params copied so that you can fuck them up locally in the fn if you
+want?
