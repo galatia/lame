@@ -2,3 +2,10 @@
 
 -- Find the sum of all the multiples of 3 or 5 below 1000.
 
+local sum = 0
+for i = 1,999 do
+    if ((i % 3 == 0) or (i % 5 == 0)) then
+        sum = sum + i
+    end
+end
+print ("The sum is:", sum)
